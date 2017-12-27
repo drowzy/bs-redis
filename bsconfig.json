@@ -4,7 +4,8 @@
   "name": "bs-redis",
   "version": "0.1.0",
   "sources": [
-    { "dir": "src" }
+    { "dir": "src" },
+    { "dir": "examples", "type": "dev" }
   ],
   "package-specs": {
     "module": "commonjs",

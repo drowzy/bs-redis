@@ -7,7 +7,7 @@ module Client = {
 
 module Subscriber = {
   type t = Client.t;
-  [@bs.send] external subscribe: (t, string) => unit = "";
+  [@bs.send.pipe : t] external subscribe: string => unit = "";
 
   [@bs.send.pipe : t] external on : ([@bs.string] 
   [ 
@@ -24,12 +24,12 @@ module Subscriber = {
 
 module Publisher = {
   type t = Client.t;
-  [@bs.send] external publish: (t, string, string) => unit = "";
+  [@bs.send.pipe : t] external publish: (string, string) => unit = "";
 };
 
 [@bs.module "redis"] external createClient : unit => Client.t = "";
 [@bs.send] external quit : Client.t => unit => unit = "";
 [@bs.send] external set : (Client.t, string, 'a, callback(string)) => unit = "";
-[@bs.send] external get : (Client.t, string, 'a, callback(string)) => unit = "";
+[@bs.send] external get : (Client.t, string, callback(string)) => unit = "";
 [@bs.send] external hset : (Client.t, string, string, 'a, callback(string)) => unit = "";
 [@bs.send] external hkeys : (Client.t, string, callback(array(string))) => unit = "";
