@@ -9,7 +9,22 @@ module Subscriber = {
   type t = Client.t;
   [@bs.send] external subscribe: (t, string) => unit = "";
 
-  [@bs.send.pipe : t] external on : ([@bs.string] [ | `subscribe((string, int) => unit) | `message((string, string) => unit)]) => t = "";
+  [@bs.send.pipe : t] external on : ([@bs.string] 
+  [ 
+    | `subscribe((string, int) => unit) 
+    | `psubsribe((string, int) => unit)
+    | `unsubscribe((string, int) => unit)
+    | `punsubscribe((string, int) => unit)
+    | `message((string, string) => unit)
+    | `pmessage((string, string, string) => unit)
+    | `message_buffer((string, Buffer.t) => unit)
+    | `pmessage_buffer((string, Buffer.t) => unit)
+  ]) => t = "";
+};
+
+module Publisher = {
+  type t = Client.t;
+  [@bs.send] external publish: (t, string, string) => unit = "";
 };
 
 [@bs.module "redis"] external createClient : unit => Client.t = "";
