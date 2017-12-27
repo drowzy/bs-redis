@@ -5,6 +5,13 @@ module Client = {
   type t;
 };
 
+module Subscriber = {
+  type t = Client.t;
+  [@bs.send] external subscribe: (t, string) => unit = "";
+
+  [@bs.send.pipe : t] external on : ([@bs.string] [ | `subscribe((string, int) => unit) | `message((string, string) => unit)]) => t = "";
+};
+
 [@bs.module "redis"] external createClient : unit => Client.t = "";
 [@bs.send] external quit : Client.t => unit => unit = "";
 [@bs.send] external set : (Client.t, string, 'a, callback(string)) => unit = "";
